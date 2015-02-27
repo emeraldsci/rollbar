@@ -192,6 +192,7 @@ func buildBody(level, title string) map[string]interface{} {
 // errorBody generates a Rollbar error body with a given stack trace.
 func errorBody(err error, stack Stack) (map[string]interface{}, string) {
 	fingerprint := stack.Fingerprint()
+	fingerprint = fmt.Sprintf("%s.%d", fingerprint, adler32.Checksum([]byte(err.Error())))
 	errBody := map[string]interface{}{
 		"trace": map[string]interface{}{
 			"frames": stack,
